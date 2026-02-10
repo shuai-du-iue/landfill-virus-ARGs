@@ -1,0 +1,6 @@
+conda activate args_oap
+
+#ARGs
+nohup args_oap stage_one -i qc -o oap_arg -f fq -t 50 >nohup 2>error &
+
+nohup args_oap stage_two -i oap_arg -t 50 &

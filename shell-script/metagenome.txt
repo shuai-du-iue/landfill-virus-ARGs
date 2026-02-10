@@ -1,0 +1,16 @@
+nohup tail -n+2  result/metadata9.txt|cut -f1|rush -j 2 \
+    "fastp -i seq/{1}_R1.fq.gz -o temp/qc/{1}_1.fastq.gz -I seq/{1}_R2.fq.gz -O temp/qc/{1}_2.fastq.gz" &
+
+conda activate metagenome
+
+nohup megahit -t 50 -1 temp/qc/XLXC23_1.fastq.gz -2 temp/qc/XLXC23_2.fastq.gz -o temp/megahit/XLXC23 &
+
+for i in `tail -n+2 result/metadata.txt|cut -f1`;
+    do
+    megahit -t 50 \
+        -1 temp/qc/${i}_1.fastq.gz \
+        -2 temp/qc/${i}_2.fastq.gz \
+        -o temp/megahit/${i}
+done
+
+nohup sh megahit.sh &
